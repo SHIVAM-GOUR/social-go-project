@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"time"
 
 	"github.com/lib/pq"
 )
@@ -29,9 +28,8 @@ func (s *PostStore) Create(ctx context.Context, post *Post) error {
 	query := `INSERT INTO posts(content,title,user_id,tags)
 	values ($1, $2, $3,$4) RETURNING id, created_at, updated_at`
 
-		ctx,cancel := context.WithTimeout(ctx,QueryTimeOutDuration)
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeOutDuration)
 	defer cancel()
-
 
 	err := s.db.QueryRowContext(
 		ctx,
@@ -50,7 +48,7 @@ func (s *PostStore) Create(ctx context.Context, post *Post) error {
 func (s *PostStore) GetById(ctx context.Context, id int64) (*Post, error) {
 	query := `SELECT id,user_id,title,content,created_at,updated_at,,version,tags FROM posts WHERE id = $1`
 
-		ctx,cancel := context.WithTimeout(ctx,QueryTimeOutDuration)
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeOutDuration)
 	defer cancel()
 
 	var post Post
@@ -81,7 +79,7 @@ func (s *PostStore) GetById(ctx context.Context, id int64) (*Post, error) {
 func (s *PostStore) Delete(ctx context.Context, postID int64) error {
 	query := `DELETE FROM posts WHERE id = $1`
 
-	ctx,cancel := context.WithTimeout(ctx,QueryTimeOutDuration)
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeOutDuration)
 	defer cancel()
 
 	res, err := s.db.ExecContext(ctx, query, postID)
