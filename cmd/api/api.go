@@ -14,6 +14,7 @@ type application struct {
 	config config
 	store  store.Storage
 }
+
 type config struct {
 	addr string
 	db   dbConfig
@@ -28,9 +29,9 @@ type dbConfig struct {
 }
 
 func (app *application) mount() http.Handler {
+	r := chi.NewRouter()
 
-	r := chi.NewRouter() //router for building HTTP services in Go.
-
+	// Middlewares
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Logger)
@@ -40,14 +41,24 @@ func (app *application) mount() http.Handler {
 	r.Route("/v1", func(r chi.Router) {
 		r.Get("/health", app.healthCheckHandler)
 
+		// Posts routes
 		r.Route("/posts", func(r chi.Router) {
 			r.Post("/", app.createPostHandler)
-			
-			r.Route("/{postID}", func(r chi.Router){
+
+			r.Route("/{postID}", func(r chi.Router) {
 				r.Use(app.postsContextMiddleware)
 				r.Get("/", app.getPostHandler)
 				r.Delete("/", app.deletePostHandler)
 				r.Patch("/", app.updatePostHandler)
+			})
+		})
+
+		// Users routes
+		r.Route("/users", func(r chi.Router) {
+			r.Route("/{userID}", func(r chi.Router) {
+				r.Get("/", app.getUserHandler)
+                // r.Put("/follow", app.followUserHandler)
+				// r.Put("/unfollow", app.unfollowUserHandler)
 
 			})
 		})
@@ -57,15 +68,14 @@ func (app *application) mount() http.Handler {
 }
 
 func (app *application) run(mux http.Handler) error {
-
-	srv := &http.Server{ // creates a server
+	srv := &http.Server{
 		Addr:         app.config.addr,
 		Handler:      mux,
-		WriteTimeout: time.Second * 30,
-		ReadTimeout:  time.Second * 10,
+		WriteTimeout: 30 * time.Second,
+		ReadTimeout:  10 * time.Second,
 		IdleTimeout:  time.Minute,
 	}
 
 	log.Printf("server has started at %s", app.config.addr)
-	return srv.ListenAndServe() //start the http server
+	return srv.ListenAndServe()
 }
