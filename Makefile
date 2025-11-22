@@ -1,3 +1,4 @@
+DB_ADDR=postgres://admin:adminpassword@localhost:5433/social?sslmode=disable
 MIGRATIONS_PATH = ./cmd/migrate/migrations
 
 .PHONY: migrate-create
