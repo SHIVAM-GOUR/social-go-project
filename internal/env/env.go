@@ -18,10 +18,9 @@ func GetInt(key string, fallback int) int {
 	if !ok {
 		return fallback
 	}
-	valIsInt, err :=strconv.Atoi(val)
+	valIsInt, err := strconv.Atoi(val)
 	if err != nil {
 		return fallback
 	}
 	return valIsInt
 }
-

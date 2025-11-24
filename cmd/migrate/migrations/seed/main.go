@@ -7,11 +7,11 @@ import (
 	"social/internal/store"
 )
 
-func main(){
-	addr := env.GetString("DB_ADDR","postgres://admin:adminpassword@localhost:5433/social?sslmode=disable")
-	conn,err := db.New(addr, 3,3,"15m")
+func main() {
+	addr := env.GetString("DB_ADDR", "postgres://admin:adminpassword@localhost:5433/social?sslmode=disable")
+	conn, err := db.New(addr, 3, 3, "15m")
 
-	if err != nil{
+	if err != nil {
 		log.Fatal(err)
 	}
 

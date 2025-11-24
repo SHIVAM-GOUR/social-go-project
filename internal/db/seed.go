@@ -2,9 +2,9 @@ package db
 
 import (
 	"context"
-	"math/rand"
 	"fmt"
 	"log"
+	"math/rand"
 	"social/internal/store"
 )
 
@@ -185,7 +185,6 @@ func Seed(store store.Storage) {
 
 }
 
-
 func generateUsers(num int) []*store.User {
 	users := make([]*store.User, num)
 
@@ -209,7 +208,7 @@ func generatePosts(num int, users []*store.User) []*store.Post {
 			UserID:  user.ID,
 			Title:   titles[rand.Intn(len(titles))],
 			Content: contents[rand.Intn(len(contents))],
-			Tags:    []string{
+			Tags: []string{
 				tags[rand.Intn(len(tags))],
 				tags[rand.Intn(len(tags))],
 			},
@@ -219,19 +218,18 @@ func generatePosts(num int, users []*store.User) []*store.Post {
 	return posts
 }
 
-
 func generateComments(num int, users []*store.User, posts []*store.Post) []*store.Comment {
-    cms := make([]*store.Comment, num)
+	cms := make([]*store.Comment, num)
 
-    for i := 0; i < num; i++ {
-        post := posts[rand.Intn(len(posts))]
-        user := users[rand.Intn(len(users))]
+	for i := 0; i < num; i++ {
+		post := posts[rand.Intn(len(posts))]
+		user := users[rand.Intn(len(users))]
 
-        cms[i] = &store.Comment{
-            PostID:  post.ID,
-            UserID:  user.ID,
-            Content: comments[rand.Intn(len(comments))], 
-        }
-    }
-    return cms
+		cms[i] = &store.Comment{
+			PostID:  post.ID,
+			UserID:  user.ID,
+			Content: comments[rand.Intn(len(comments))],
+		}
+	}
+	return cms
 }

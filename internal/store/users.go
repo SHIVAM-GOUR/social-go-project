@@ -36,7 +36,7 @@ func (s *UserStore) GetById(ctx context.Context, userID int64) (*User, error) {
 	defer cancel()
 
 	user := &User{}
-	err := s.db.QueryRowContext(ctx, query,userID,).Scan(
+	err := s.db.QueryRowContext(ctx, query, userID).Scan(
 		&user.ID,
 		&user.UserName, &user.Password, &user.Email, &user.CreatedAt,
 	)

@@ -39,14 +39,13 @@ func (app *application) followUserHandler(w http.ResponseWriter, r *http.Request
 		switch err {
 
 		case store.ErrConflict:
-			app.ConflictResponse(w,r,err)
-			return 
+			app.ConflictResponse(w, r, err)
+			return
 
 		default:
-			app.internalServerError(w,r,err)
+			app.internalServerError(w, r, err)
 			return
 		}
-		
 
 	}
 
