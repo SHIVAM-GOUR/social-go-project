@@ -15,6 +15,7 @@ go.work.sum
 # Build output
 /bin/
 /tmp/
+
 dist/
 build/
 
