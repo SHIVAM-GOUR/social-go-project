@@ -40,14 +40,15 @@ type FollowUser struct {
 
 // FollowUser godoc
 //
-//	@Summary		Follows a uuser
+//	@Summary		Follows a user
 //	@Description	Fetches a user profile with ID
 //	@Tags			users
 //	@Accept			json
 //	@Produce		json
 //	@Param			userID	path		int		true	"User ID"
 //	@Success		204		{string}	string	"User followed"
-//	@Failure		400		{object}	"User not found"
+//	@Failure		404		{object}	error	"User payload missing"
+//	@Failure		400		{object}	error	"User not found"
 //	@Security		ApiKeyAuth
 //	@Router			/users/{userID}/follow [put]
 func (app *application) followUserHandler(w http.ResponseWriter, r *http.Request) {
