@@ -41,7 +41,6 @@ coverage.html
 .env
 .env.local
 .env.*.local
-.envrc
 
 # Log files
 *.log
