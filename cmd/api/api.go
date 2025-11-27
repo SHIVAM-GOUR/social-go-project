@@ -25,10 +25,10 @@ type config struct {
 	db     dbConfig
 	env    string
 	apiURL string
-	mail mailConfig
+	mail   mailConfig
 }
 
-type mailConfig struct{
+type mailConfig struct {
 	exp time.Duration
 }
 
@@ -69,6 +69,8 @@ func (app *application) mount() http.Handler {
 
 		// Users routes
 		r.Route("/users", func(r chi.Router) {
+			r.Put("/activate/{token}", app.activateUserHandler)
+
 			r.Route("/{userID}", func(r chi.Router) {
 				r.Use(app.userContextMiddleware)
 				r.Get("/", app.getUserHandler)

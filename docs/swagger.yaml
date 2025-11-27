@@ -2,12 +2,14 @@ basePath: /api/v1
 definitions:
   store.User:
     properties:
-      createdAt:
+      created_at:
         type: string
       email:
         type: string
       id:
         type: integer
+      is_active:
+        type: boolean
       username:
         type: string
     type: object
@@ -81,6 +83,33 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Follows a user
+      tags:
+      - users
+  /users/activate/{token}:
+    put:
+      description: Activates/Register a user by invitation token
+      parameters:
+      - description: Invitation Token
+        in: path
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: User Activated
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Activates/Register a user
       tags:
       - users
 securityDefinitions:
