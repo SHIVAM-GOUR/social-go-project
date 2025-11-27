@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"social/docs"
 	"social/internal/store"
@@ -10,6 +9,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"go.uber.org/zap"
 
 	httpSwagger "github.com/swaggo/http-swagger"
 )
@@ -17,6 +17,7 @@ import (
 type application struct {
 	config config
 	store  store.Storage
+	logger *zap.SugaredLogger
 }
 
 type config struct {
@@ -24,6 +25,11 @@ type config struct {
 	db     dbConfig
 	env    string
 	apiURL string
+	mail mailConfig
+}
+
+type mailConfig struct{
+	exp time.Duration
 }
 
 type dbConfig struct {
@@ -74,6 +80,11 @@ func (app *application) mount() http.Handler {
 			r.Group(func(r chi.Router) {
 				r.Get("/feed", app.getUserFeedHandler)
 			})
+			//Public routes
+			r.Route("/authentication", func(r chi.Router) {
+				r.Post("/user", app.registerUserHandler)
+			})
+
 		})
 
 	})
@@ -95,6 +106,6 @@ func (app *application) run(mux http.Handler) error {
 		IdleTimeout:  time.Minute,
 	}
 
-	log.Printf("server has started at %s", app.config.addr)
+	app.logger.Infow("server has started", "addr", app.config.addr, "env", app.config.env)
 	return srv.ListenAndServe()
 }

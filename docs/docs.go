@@ -130,13 +130,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer",
-                    "format": "int64"
+                    "type": "integer"
                 },
-                "password": {
-                    "type": "string"
-                },
-                "userName": {
+                "username": {
                     "type": "string"
                 }
             }

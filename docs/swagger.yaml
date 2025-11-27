@@ -7,11 +7,8 @@ definitions:
       email:
         type: string
       id:
-        format: int64
         type: integer
-      password:
-        type: string
-      userName:
+      username:
         type: string
     type: object
 info:
