@@ -64,7 +64,7 @@ docker-compose.override.yml
 
 # Migration binary (if generated)
 migrate.linux-amd64.tar.gz
-migrate
+
 
 # Air (live reload) temporary files
 tmp/
