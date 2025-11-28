@@ -43,6 +43,7 @@ func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request
 	ctx := r.Context()
 
 	if err := app.store.Posts.Create(ctx, post); err != nil {
+		// log.Printf("[info]: error in post creattion");
 		app.internalServerError(w, r, err)
 
 		return

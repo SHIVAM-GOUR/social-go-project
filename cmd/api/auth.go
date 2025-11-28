@@ -20,7 +20,7 @@ type userWithToken struct {
 	Token string `json:"token"`
 }
 
-//registerUserHandler godoc
+// registerUserHandler godoc
 //
 //	@Summary		Registers a user
 //	@Description	Registers a user
@@ -28,12 +28,11 @@ type userWithToken struct {
 //	@Accept			json
 //	@Produce		json
 //	@Param			payload	body		RegisterUserPayload	true	"User credentials"
-//	@Success		201		{object}	UserWithToken		"user registered"
+//	@Success		201		{object}	userWithToken		"user registered"
 //	@Failure		400		{object}	error
 //	@Failure		500		{object}	error
 //	@Security		ApiKeyAuth
 //	@Router			/authentication/user [post]
-
 func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Request) {
 	var payload RegisterUserPayload
 
