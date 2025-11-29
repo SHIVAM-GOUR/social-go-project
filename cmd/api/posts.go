@@ -55,6 +55,19 @@ func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request
 	}
 }
 
+// Get Post by ID
+//
+//	@Summary		Fetches post by ID
+//	@Description	Fetches a post by ID
+//	@Tags			post
+//	@Produce		json
+//	@Param			postID	path		int	true	"Post ID"
+//	@Success		200		{object}	store.Post
+//	@Failure		400		{object}	error
+//	@Failure		404		{object}	error
+//	@Failure		500		{object}	error
+//	@Security		ApiKeyAuth
+//	@Router			/posts/{postID} [get]
 func (app *application) getPostHandler(w http.ResponseWriter, r *http.Request) {
 	// idParam := chi.URLParam(r, "postID") //extract postId from url
 	// //convert string to int
@@ -97,6 +110,19 @@ func (app *application) getPostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
+
+// Delete Post by id
+//
+//	@Summary		Delete a post
+//	@Description	Delete a post by post id
+//	@Tags			post
+//	@Produce		json
+//	@Param			postID	path	int	true	"Post ID"
+//	@Success		204		"Post successfully deleted"
+//	@Failure		404		{object}	error
+//	@Failure		500		{object}	error
+//	@Security		ApiKeyAuth
+//	@Router			/posts/{postID} [delete]
 func (app *application) deletePostHandler(w http.ResponseWriter, r *http.Request) {
 	idParam := chi.URLParam(r, "postID") //extract postId from url
 
@@ -126,6 +152,20 @@ type UpdatePostPayload struct {
 	Content *string `json:"content" validate:"omitempty,max=1000"`
 }
 
+// Update Post by id
+//
+//	@Summary		Update a post
+//	@Description	Update a post by post id
+//	@Tags			post
+//	@Produce		json
+//	@Param			postID	path		int					true	"Post ID"
+//	@Param			post	body		UpdatePostPayload	true	"Post data to update"
+//	@Success		200		{object}	store.Post
+//	@Failure		400		{object}	error
+//	@Failure		404		{object}	error
+//	@Failure		500		{object}	error
+//	@Security		ApiKeyAuth
+//	@Router			/posts/{postID} [patch]
 func (app *application) updatePostHandler(w http.ResponseWriter, r *http.Request) {
 	post := getPostFromCtx(r)
 

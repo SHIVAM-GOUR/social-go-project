@@ -45,15 +45,16 @@ type FollowUser struct {
 //	@Tags			users
 //	@Accept			json
 //	@Produce		json
-//	@Param			userID	path		int		true	"User ID"
-//	@Success		204		{string}	string	"User followed"
-//	@Failure		404		{object}	error	"User payload missing"
-//	@Failure		400		{object}	error	"User not found"
+//	@Param			userID	path		int			true	"Follower User ID"
+//	@Param			user	body		FollowUser	true	"User id"
+//	@Success		204		{string}	string		"User followed"
+//	@Failure		404		{object}	error		"User payload missing"
+//	@Failure		400		{object}	error		"User not found"
 //	@Security		ApiKeyAuth
 //	@Router			/users/{userID}/follow [put]
 func (app *application) followUserHandler(w http.ResponseWriter, r *http.Request) {
 	followerUser := getUserFromContext(r)
-	// Revert back to auth userID from ctx
+
 	var payload FollowUser
 	if err := readJSON(w, r, &payload); err != nil {
 		app.badRequestResponse(w, r, err)
@@ -64,7 +65,6 @@ func (app *application) followUserHandler(w http.ResponseWriter, r *http.Request
 
 	if err := app.store.Followers.Follow(ctx, followerUser.ID, payload.UserID); err != nil {
 		switch err {
-
 		case store.ErrConflict:
 			app.ConflictResponse(w, r, err)
 			return
@@ -82,9 +82,21 @@ func (app *application) followUserHandler(w http.ResponseWriter, r *http.Request
 
 }
 
+// Unfollow user godoc
+//
+//	@Summary		Unfollow a user
+//	@Description	Unfollow a user with ID
+//	@Tags			users
+//	@Accept			json
+//	@Param			userID	path	int			true	"Follower User ID"
+//	@Param			user	body	FollowUser	true	"User id"
+//	@Success		204		"User unfollowed"
+//	@Failure		500		{object}	error	"Internal server error"
+//	@Security		ApiKeyAuth
+//	@Router			/users/{userID}/unfollow [put]
 func (app *application) unfollowUserHandler(w http.ResponseWriter, r *http.Request) {
 	unfollowedUser := getUserFromContext(r)
-	// Revert back to auth userID from ctx
+
 	var payload FollowUser
 	if err := readJSON(w, r, &payload); err != nil {
 		app.badRequestResponse(w, r, err)
