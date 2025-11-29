@@ -400,10 +400,19 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "User ID",
+                        "description": "Follower User ID",
                         "name": "userID",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "User id",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.FollowUser"
+                        }
                     }
                 ],
                 "responses": {
@@ -432,6 +441,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Unfollow a user with ID",
+                "consumes": [
+                    "application/json"
+                ],
                 "tags": [
                     "users"
                 ],
@@ -439,10 +451,19 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "User ID",
+                        "description": "Follower User ID",
                         "name": "userID",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "User id",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.FollowUser"
+                        }
                     }
                 ],
                 "responses": {
@@ -458,6 +479,14 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "main.FollowUser": {
+            "type": "object",
+            "properties": {
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "main.RegisterUserPayload": {
             "type": "object",
             "required": [

@@ -1,5 +1,10 @@
 basePath: /api/v1
 definitions:
+  main.FollowUser:
+    properties:
+      user_id:
+        type: integer
+    type: object
   main.RegisterUserPayload:
     properties:
       email:
@@ -353,11 +358,17 @@ paths:
       - application/json
       description: Fetches a user profile with ID
       parameters:
-      - description: User ID
+      - description: Follower User ID
         in: path
         name: userID
         required: true
         type: integer
+      - description: User id
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/main.FollowUser'
       produces:
       - application/json
       responses:
@@ -378,13 +389,21 @@ paths:
       - users
   /users/{userID}/unfollow:
     put:
+      consumes:
+      - application/json
       description: Unfollow a user with ID
       parameters:
-      - description: User ID
+      - description: Follower User ID
         in: path
         name: userID
         required: true
         type: integer
+      - description: User id
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/main.FollowUser'
       responses:
         "204":
           description: User unfollowed
