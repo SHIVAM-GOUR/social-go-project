@@ -34,9 +34,9 @@ func (app *application) getUserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// type FollowUser struct {
-// 	UserID int64 `json:"user_id"`
-// }
+type FollowUser struct {
+	UserID int64 `json:"user_id"`
+}
 
 // FollowUser godoc
 //
@@ -54,16 +54,15 @@ func (app *application) getUserHandler(w http.ResponseWriter, r *http.Request) {
 func (app *application) followUserHandler(w http.ResponseWriter, r *http.Request) {
 	followerUser := getUserFromContext(r)
 
-	idParam := chi.URLParam(r, "userID") //extract postId from url
-	userID, err := strconv.ParseInt(idParam, 10, 64)
-	if err != nil {
-		app.internalServerError(w, r, err)
+	var payload FollowUser
+	if err := readJSON(w, r, &payload); err != nil {
+		app.badRequestResponse(w, r, err)
 		return
 	}
 
 	ctx := r.Context()
 
-	if err := app.store.Followers.Follow(ctx, followerUser.ID, userID); err != nil {
+	if err := app.store.Followers.Follow(ctx, followerUser.ID, payload.UserID); err != nil {
 		switch err {
 		case store.ErrConflict:
 			app.ConflictResponse(w, r, err)
@@ -95,16 +94,15 @@ func (app *application) followUserHandler(w http.ResponseWriter, r *http.Request
 func (app *application) unfollowUserHandler(w http.ResponseWriter, r *http.Request) {
 	unfollowedUser := getUserFromContext(r)
 
-	idParam := chi.URLParam(r, "userID") //extract postId from url
-	userID, err := strconv.ParseInt(idParam, 10, 64)
-	if err != nil {
-		app.internalServerError(w, r, err)
+	var payload FollowUser
+	if err := readJSON(w, r, &payload); err != nil {
+		app.badRequestResponse(w, r, err)
 		return
 	}
 
 	ctx := r.Context()
 
-	if err := app.store.Followers.Unfollow(ctx, unfollowedUser.ID, userID); err != nil {
+	if err := app.store.Followers.Unfollow(ctx, unfollowedUser.ID, payload.UserID); err != nil {
 		app.internalServerError(w, r, err)
 		return
 
