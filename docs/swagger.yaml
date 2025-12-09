@@ -13,11 +13,6 @@ definitions:
     - email
     - password
     type: object
-  main.FollowUser:
-    properties:
-      user_id:
-        type: integer
-    type: object
   main.RegisterUserPayload:
     properties:
       email:
@@ -402,17 +397,11 @@ paths:
       - application/json
       description: Fetches a user profile with ID
       parameters:
-      - description: Follower User ID
+      - description: User ID
         in: path
         name: userID
         required: true
         type: integer
-      - description: User id
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/main.FollowUser'
       produces:
       - application/json
       responses:
@@ -442,12 +431,6 @@ paths:
         name: userID
         required: true
         type: integer
-      - description: User id
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/main.FollowUser'
       responses:
         "204":
           description: User unfollowed
