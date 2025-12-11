@@ -49,6 +49,10 @@ definitions:
         type: integer
       is_active:
         type: boolean
+      role:
+        $ref: '#/definitions/store.Role'
+      role_id:
+        type: integer
       token:
         type: string
       username:
@@ -129,6 +133,17 @@ definitions:
       version:
         type: integer
     type: object
+  store.Role:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      level:
+        type: integer
+      name:
+        type: string
+    type: object
   store.User:
     properties:
       created_at:
@@ -139,6 +154,10 @@ definitions:
         type: integer
       is_active:
         type: boolean
+      role:
+        $ref: '#/definitions/store.Role'
+      role_id:
+        type: integer
       username:
         type: string
     type: object
@@ -270,13 +289,13 @@ paths:
       summary: Health Check
       tags:
       - health
-  /posts/{postID}:
+  /posts/{id}:
     delete:
       description: Delete a post by post id
       parameters:
       - description: Post ID
         in: path
-        name: postID
+        name: id
         required: true
         type: integer
       produces:
@@ -295,6 +314,45 @@ paths:
       summary: Delete a post
       tags:
       - post
+    patch:
+      description: Update a post by post id
+      parameters:
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Post Payload
+        in: body
+        name: poyload
+        required: true
+        schema:
+          $ref: '#/definitions/main.UpdatePostPayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/store.Post'
+        "400":
+          description: Bad Request
+          schema: {}
+        "401":
+          description: Unauthorized
+          schema: {}
+        "404":
+          description: Not Found
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Update a post
+      tags:
+      - post
+  /posts/{postID}:
     get:
       description: Fetches a post by ID
       parameters:
@@ -322,41 +380,6 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Fetches post by ID
-      tags:
-      - post
-    patch:
-      description: Update a post by post id
-      parameters:
-      - description: Post ID
-        in: path
-        name: postID
-        required: true
-        type: integer
-      - description: Post data to update
-        in: body
-        name: post
-        required: true
-        schema:
-          $ref: '#/definitions/main.UpdatePostPayload'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/store.Post'
-        "400":
-          description: Bad Request
-          schema: {}
-        "404":
-          description: Not Found
-          schema: {}
-        "500":
-          description: Internal Server Error
-          schema: {}
-      security:
-      - ApiKeyAuth: []
-      summary: Update a post
       tags:
       - post
   /users/{userID}:

@@ -198,51 +198,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/posts/{postID}": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Fetches a post by ID",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "post"
-                ],
-                "summary": "Fetches post by ID",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Post ID",
-                        "name": "postID",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/store.Post"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {}
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {}
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {}
-                    }
-                }
-            },
+        "/posts/{id}": {
             "delete": {
                 "security": [
                     {
@@ -261,7 +217,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Post ID",
-                        "name": "postID",
+                        "name": "id",
                         "in": "path",
                         "required": true
                     }
@@ -298,18 +254,68 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Post ID",
-                        "name": "postID",
+                        "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "Post data to update",
-                        "name": "post",
+                        "description": "Post Payload",
+                        "name": "poyload",
                         "in": "body",
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/main.UpdatePostPayload"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/store.Post"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {}
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/posts/{postID}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Fetches a post by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "post"
+                ],
+                "summary": "Fetches post by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Post ID",
+                        "name": "postID",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -576,6 +582,12 @@ const docTemplate = `{
                 "is_active": {
                     "type": "boolean"
                 },
+                "role": {
+                    "$ref": "#/definitions/store.Role"
+                },
+                "role_id": {
+                    "type": "integer"
+                },
                 "token": {
                     "type": "string"
                 },
@@ -696,6 +708,23 @@ const docTemplate = `{
                 }
             }
         },
+        "store.Role": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "level": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "store.User": {
             "type": "object",
             "properties": {
@@ -710,6 +739,12 @@ const docTemplate = `{
                 },
                 "is_active": {
                     "type": "boolean"
+                },
+                "role": {
+                    "$ref": "#/definitions/store.Role"
+                },
+                "role_id": {
+                    "type": "integer"
                 },
                 "username": {
                     "type": "string"

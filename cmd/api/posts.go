@@ -20,6 +20,20 @@ type CreatePostPayload struct {
 	Tags    []string `json:"tags"`
 }
 
+// Create Post
+//
+//	@Summary		Create a post
+//	@Description	Create a new post
+//	@Tags			post
+//	@Accept			json
+//	@Produce		json
+//	@Param			payload	body		CreatePostPayload	true	"Post data"
+//	@Success		201		{object}	store.Post
+//	@Failure		400		{object}	error
+//	@Failure		500		{object}	error
+//	@Security		ApiKeyAuth
+//	@Router			/posts [post]
+
 func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request) {
 	var payload CreatePostPayload
 
@@ -119,12 +133,12 @@ func (app *application) getPostHandler(w http.ResponseWriter, r *http.Request) {
 //	@Description	Delete a post by post id
 //	@Tags			post
 //	@Produce		json
-//	@Param			postID	path	int	true	"Post ID"
-//	@Success		204		"Post successfully deleted"
-//	@Failure		404		{object}	error
-//	@Failure		500		{object}	error
+//	@Param			id	path	int	true	"Post ID"
+//	@Success		204	"Post successfully deleted"
+//	@Failure		404	{object}	error
+//	@Failure		500	{object}	error
 //	@Security		ApiKeyAuth
-//	@Router			/posts/{postID} [delete]
+//	@Router			/posts/{id} [delete]
 func (app *application) deletePostHandler(w http.ResponseWriter, r *http.Request) {
 	idParam := chi.URLParam(r, "postID") //extract postId from url
 
@@ -160,14 +174,15 @@ type UpdatePostPayload struct {
 //	@Description	Update a post by post id
 //	@Tags			post
 //	@Produce		json
-//	@Param			postID	path		int					true	"Post ID"
-//	@Param			post	body		UpdatePostPayload	true	"Post data to update"
+//	@Param			id		path		int					true	"Post ID"
+//	@Param			poyload	body		UpdatePostPayload	true	"Post Payload"
 //	@Success		200		{object}	store.Post
 //	@Failure		400		{object}	error
+//	@Failure		401		{object}	error
 //	@Failure		404		{object}	error
 //	@Failure		500		{object}	error
 //	@Security		ApiKeyAuth
-//	@Router			/posts/{postID} [patch]
+//	@Router			/posts/{id} [patch]
 func (app *application) updatePostHandler(w http.ResponseWriter, r *http.Request) {
 	post := getPostFromCtx(r)
 
