@@ -15,8 +15,8 @@ type postKey string
 const postCtx postKey = "post"
 
 type CreatePostPayload struct {
-	Title   string   `json:"title" validator:"required,max=100"`
-	Content string   `json:"content" validator:"required,max=1000"`
+	Title   string   `json:"title" validate:"required,max=100"`
+	Content string   `json:"content" validate:"required,max=1000"`
 	Tags    []string `json:"tags"`
 }
 
@@ -33,7 +33,6 @@ type CreatePostPayload struct {
 //	@Failure		500		{object}	error
 //	@Security		ApiKeyAuth
 //	@Router			/posts [post]
-
 func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request) {
 	var payload CreatePostPayload
 
