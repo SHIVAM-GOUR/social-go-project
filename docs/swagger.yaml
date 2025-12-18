@@ -1,4 +1,4 @@
-basePath: /api/v1
+basePath: /v1
 definitions:
   main.CreatePostPayload:
     properties:
@@ -182,6 +182,7 @@ info:
     email: support@swagger.io
     name: API Support
     url: http://www.swagger.io/support
+  description: API for GopherSocial, a social network for gohpers
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -539,6 +540,8 @@ paths:
       tags:
       - users
 securityDefinitions:
-  BasicAuth:
-    type: basic
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

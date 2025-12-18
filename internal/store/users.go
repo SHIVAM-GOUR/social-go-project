@@ -73,7 +73,7 @@ func (s *UserStore) Create(ctx context.Context, tx *sql.Tx, user *User) error {
 }
 
 func (s *UserStore) GetById(ctx context.Context, userID int64) (*User, error) {
-	query := `SELECT users.id,username,email,password,created_at, roles.* FROM users JOIN roles ON (users.role_id = roles.id) WHERE users.id = $1`
+	query := `SELECT users.id,username,email,password,created_at, roles.* FROM users JOIN roles ON (users.role_id = roles.id) WHERE users.id = $1  AND is_active = true`
 
 	ctx, cancel := context.WithTimeout(ctx, QueryTimeOutDuration)
 	defer cancel()
@@ -96,6 +96,7 @@ func (s *UserStore) GetById(ctx context.Context, userID int64) (*User, error) {
 
 	return user, nil
 }
+
 func (s *UserStore) CreateAndInvite(ctx context.Context, user *User, token string, invitationExp time.Duration) error {
 	return withTx(s.db, ctx, func(tx *sql.Tx) error {
 		// create the user

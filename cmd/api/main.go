@@ -14,7 +14,7 @@ import (
 const version = "0.0.1"
 
 //	@title			GopherSocial API
-//	@description	API for GopherSocial, a social network for gophers
+//	@description	API for GopherSocial, a social network for gohpers
 //	@termsOfService	http://swagger.io/terms/
 
 //	@contact.name	API Support
@@ -24,12 +24,12 @@ const version = "0.0.1"
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
-//	@BasePath					/api/v1
-//	@securityDefinitions.basic	BasicAuth
-//	@in							Header
-//	@name						Authorization
-//	@description
-
+// @BasePath					/v1
+//
+// @securityDefinitions.apikey	ApiKeyAuth
+// @in							header
+// @name						Authorization
+// @description
 func main() {
 
 	cfg := config{
